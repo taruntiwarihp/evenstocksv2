@@ -12,6 +12,10 @@ import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import RazorpayPayment from './pages/RazorpayPayment';
 import ChatBotPage from './pages/ChatBotPage';
+import ChatBotPageEnhanced from './pages/ChatBotPageEnhanced';
+import ChatBotPageFinal from './pages/ChatBotPageFinal';
+import StockDetailPage from './pages/StockDetailPage';
+import IrisPage from './pages/IrisPage';
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -34,7 +38,8 @@ const GuestRoute = ({ children }) => {
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<ChatBotPageFinal />} />
+      <Route path="/dashboard" element={<HomePage />} />
       <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
       <Route path="/signup" element={<GuestRoute><SignupPage /></GuestRoute>} />
       <Route path="/admins" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
@@ -43,7 +48,9 @@ const AppRoutes = () => {
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/razorpay" element={<ProtectedRoute><RazorpayPayment /></ProtectedRoute>} />
-      <Route path="/chatbot" element={<ChatBotPage />} />
+      <Route path="/chatbot" element={<ChatBotPageFinal />} />
+      <Route path="/stock/:stockName" element={<StockDetailPage />} />
+      <Route path="/iris" element={<IrisPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

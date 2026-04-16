@@ -295,6 +295,70 @@ const HomePage = () => {
           </ul>
         </div>
 
+        {/* Ask Iris Section */}
+        <section id="ask-iris" className="ask-iris section">
+          <div className="container" data-aos="fade-up" data-aos-delay="100">
+            <div className="row align-items-center">
+              <div className="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+                <div className="iris-content">
+                  <span className="iris-badge">Meet Iris</span>
+                  <h2>Your Personal Stock Analyst</h2>
+                  <p className="iris-description">
+                    Iris is our advanced AI analyst that goes beyond simple recommendations. Ask Iris anything about stocks, markets, or your portfolio, and get comprehensive analysis powered by real-time data and AI insights.
+                  </p>
+                  <div className="iris-features">
+                    <div className="iris-feature">
+                      <i className="bi bi-search"></i>
+                      <span>Market Explorer - Search & analyze thousands of stocks</span>
+                    </div>
+                    <div className="iris-feature">
+                      <i className="bi bi-graph-up"></i>
+                      <span>Market Pulse - Real-time market updates and news</span>
+                    </div>
+                    <div className="iris-feature">
+                      <i className="bi bi-microscope"></i>
+                      <span>Deep Dive - In-depth analysis of sectors and earnings</span>
+                    </div>
+                    <div className="iris-feature">
+                      <i className="bi bi-briefcase"></i>
+                      <span>Investor's Suite - Personal portfolio tools and insights</span>
+                    </div>
+                  </div>
+                  <Link to="/iris" className="btn btn-iris">
+                    Talk to Iris <i className="bi bi-arrow-right"></i>
+                  </Link>
+                </div>
+              </div>
+              <div className="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                <div className="iris-visual">
+                  <div className="iris-card">
+                    <div className="iris-card-header">
+                      <span className="iris-icon">✨</span>
+                      <h4>Ask Iris</h4>
+                    </div>
+                    <div className="iris-card-body">
+                      <div className="iris-example">
+                        <p className="iris-q">Should I buy TCS now?</p>
+                        <p className="iris-a">Based on the latest fundamentals and technical analysis, TCS shows strong performance with a P/E of 24.5...</p>
+                      </div>
+                      <div className="iris-features-quick">
+                        <span className="iris-tag">📊 Market Pulse</span>
+                        <span className="iris-tag">🔍 Market Explorer</span>
+                        <span className="iris-tag">🔬 Deep Dive</span>
+                        <span className="iris-tag">💼 Investor's Suite</span>
+                      </div>
+                    </div>
+                    <div className="iris-card-footer">
+                      <input type="text" placeholder="Ask Iris anything..." className="iris-input-demo" disabled />
+                      <button className="iris-send-demo" disabled>➤</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Call to Action */}
         <section id="call-to-action" className="call-to-action section">
           <div className="container" data-aos="fade-up" data-aos-delay="100">

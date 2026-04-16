@@ -67,8 +67,6 @@ async def stock_chat_ws(ws: WebSocket):
             # ── Search stocks ────────────────────────────────
             if action == "search":
                 query = data.get("query", "").strip()
-                if not query:
-                    continue
                 results = search_stocks(db_conn, query)
                 await ws.send_json({
                     "type": "search_results",

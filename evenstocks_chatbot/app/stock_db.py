@@ -17,8 +17,9 @@ def get_conn() -> sqlite3.Connection | None:
     return conn
 
 
-def search_stocks(conn: sqlite3.Connection, query: str, limit: int = 10) -> list[dict]:
-    """Fuzzy search stocks by name. Returns list of {stock_name, url, market_cap}."""
+def search_stocks(conn: sqlite3.Connection, query: str, limit: int = 20) -> list[dict]:
+    """Fuzzy search stocks by name. Returns list of {stock_name, url, market_cap}.
+    Empty query returns all stocks (limited)."""
     q = query.strip().replace(" ", "_").replace(".", "")
     rows = conn.execute(
         """SELECT stock_name, url, market_cap, current_price, stock_pe

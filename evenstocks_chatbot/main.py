@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.chat import router as chat_router
 from app.api.stock_chat import router as stock_chat_router
+from app.api.stock_detail import router as stock_detail_router
 from app.api.health import router as health_router
 from app.config import HOST, PORT
 
@@ -28,6 +29,7 @@ app.add_middleware(
 # Register API routers
 app.include_router(chat_router)
 app.include_router(stock_chat_router)
+app.include_router(stock_detail_router)
 app.include_router(health_router)
 
 
