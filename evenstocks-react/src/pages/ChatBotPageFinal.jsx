@@ -33,7 +33,7 @@ const ChatBotPageFinal = () => {
   const [chatSearchQuery, setChatSearchQuery] = useState('');
   const searchModalOpenRef = useRef(false);
   const pendingMessageRef = useRef(null);
-  const isCancelledRef = useRef(false);
+  const isCancelledRef = useRef(false); // true after cancel — gates stream events, NOT search
 
   const msgBoxRef = useRef(null);
   const thinkingTimerRef = useRef(null);
@@ -96,22 +96,18 @@ const ChatBotPageFinal = () => {
         }
 
         if (data.type === 'stream_start') {
-          isCancelledRef.current = false; // reset on new stream
+          if (isCancelledRef.current) return; // leftover from cancelled stream
           setStreamingContent('');
           setThinking(true);
         }
 
         if (data.type === 'stream_delta') {
-          if (!isCancelledRef.current) {
-            setStreamingContent((prev) => prev + data.content);
-          }
+          if (isCancelledRef.current) return; // leftover from cancelled stream
+          setStreamingContent((prev) => prev + data.content);
         }
 
         if (data.type === 'stream_end') {
-          if (isCancelledRef.current) {
-            isCancelledRef.current = false; // reset for next use
-            return;
-          }
+          if (isCancelledRef.current) return; // leftover from cancelled stream
           clearInterval(thinkingTimerRef.current);
           setThinking(false);
           setStreamingContent((prev) => {
@@ -137,7 +133,6 @@ const ChatBotPageFinal = () => {
 
       ws.onclose = () => {
         wsRef.current = null;
-        // Reconnect after 3s
         setTimeout(connectWs, 3000);
       };
 
@@ -491,6 +486,8 @@ const ChatBotPageFinal = () => {
     }
 
     const userMsg = input;
+    // Reset cancel flag so the new stream's events are processed
+    isCancelledRef.current = false;
     setMessages((prev) => [...prev, { type: 'user', content: userMsg }]);
     setInput('');
     setShowMentionList(false);
@@ -566,6 +563,7 @@ const ChatBotPageFinal = () => {
   };
 
   const cancelThinking = useCallback(() => {
+    // Flag to ignore any remaining stream events from the cancelled stream
     isCancelledRef.current = true;
     clearInterval(thinkingTimerRef.current);
     setThinking(false);
@@ -573,9 +571,10 @@ const ChatBotPageFinal = () => {
       setMessages(prev => [...prev, { type: 'bot', content: streamingContent }]);
     }
     setStreamingContent('');
-    // Do NOT close WS — keep connection alive so @mentions keep working
-    // Safety: if stream_end never arrives, re-enable after 3s
-    setTimeout(() => { isCancelledRef.current = false; }, 3000);
+    // Tell server to stop streaming — keeps WS alive so @mention works immediately
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ action: 'clear' }));
+    }
   }, [streamingContent]);
 
   const handleSearch = (query) => {

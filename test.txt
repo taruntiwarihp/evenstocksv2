@@ -7,3 +7,21 @@ conda activate evenstocks && cd evenstocks_chatbot && uvicorn main:app --reload 
 cd evenstocks-backend && node server.js
 
 cd evenstocks-react && npm start
+
+
+docker-compose up --build
+
+# Start in background (detached mode)
+docker-compose up -d
+
+# View logs of running containers
+docker-compose logs
+
+# View logs and follow new output
+docker-compose logs -f
+
+# Stop all containers
+docker-compose down
+
+# Stop and remove containers + networks
+docker-compose down --volumes  # Also removes data volumes

@@ -50,7 +50,11 @@ const Header = () => {
     <header id="header" className={`header d-flex align-items-center fixed-top ${scrolled ? 'scrolled' : ''} ${isDark ? 'header-dark' : ''}`}>
       <div className="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
         <Link to="/" className="logo">
-          <img src="/assets/img/logo-horizontal.png" alt="Even Stocks" className="logo-img" />
+          <img
+            src={isDark ? '/assets/img/logo-horizontal-white.png' : '/assets/img/logo-horizontal.png'}
+            alt="Even Stocks"
+            className="logo-img"
+          />
         </Link>
 
         <nav id="navmenu" className="navmenu">

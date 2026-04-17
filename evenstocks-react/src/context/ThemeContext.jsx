@@ -14,6 +14,9 @@ export const ThemeProvider = ({ children }) => {
     try {
       localStorage.setItem('evenstocks_dark_theme', JSON.stringify(isDark));
     } catch {}
+    // Force body background so no white bar shows on any page
+    document.body.style.background = isDark ? '#0f0f0f' : '#ffffff';
+    document.body.style.color = isDark ? '#e0e0e0' : '';
   }, [isDark]);
 
   const toggleTheme = () => setIsDark(d => !d);

@@ -739,3 +739,63 @@
 /* Info box items */
 .dashboard-dark .info-item { border-color: #2a2a2a !important; }
 .dashboard-dark .icon-box { background: #252525 !important; color: #02634d !important; }
+
+/* ============= FOOTER DARK MODE ============= */
+.footer.footer-dark {
+  background-color: #0d0d0d !important;
+  color: #b0b0b0 !important;
+  border-top: 1px solid #1a1a1a !important;
+}
+
+.footer.footer-dark .footer-top {
+  background-color: #0d0d0d !important;
+}
+
+.footer.footer-dark .footer-about p {
+  color: #999 !important;
+}
+
+.footer.footer-dark .footer-links h4,
+.footer.footer-dark .footer-contact h4 {
+  color: #e0e0e0 !important;
+}
+
+.footer.footer-dark .footer-links ul a,
+.footer.footer-dark .footer-contact p {
+  color: #999 !important;
+}
+
+.footer.footer-dark .footer-links ul a:hover {
+  color: #02634d !important;
+}
+
+.footer.footer-dark .social-links a {
+  background: #1a1a1a !important;
+  color: #aaa !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+.footer.footer-dark .social-links a:hover {
+  background: #02634d !important;
+  color: #fff !important;
+  border-color: #02634d !important;
+}
+
+.footer.footer-dark .copyright {
+  background: #080808 !important;
+  border-top: 1px solid #1a1a1a !important;
+  color: #666 !important;
+}
+
+.footer.footer-dark .copyright strong,
+.footer.footer-dark .copyright a {
+  color: #02634d !important;
+}
+
+/* Scroll-top button — always visible on dark bg */
+.footer.footer-dark + .scroll-top,
+.scroll-top {
+  background: #02634d !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(2, 99, 77, 0.4) !important;
+}

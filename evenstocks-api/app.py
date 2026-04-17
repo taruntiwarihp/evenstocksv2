@@ -25,11 +25,13 @@ import hashlib
 from dotenv import load_dotenv
 
 # ---------- Config ----------
-load_dotenv(".env")
+load_dotenv("../.env")
 
 SENDER_EMAIL    =  os.getenv('SENDER_EMAIL')
 SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
 
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_USER = os.getenv('DB_USER', 'root')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
@@ -46,8 +48,8 @@ CORS(app)
 
 def get_db_connection():
     return mysql.connector.connect(
-        host = 'localhost',
-        user = 'root',
+        host = DB_HOST,
+        user = DB_USER,
         password = DB_PASSWORD,
         database = 'evenstocks_db',
     )

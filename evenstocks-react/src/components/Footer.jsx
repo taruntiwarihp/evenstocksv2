@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 const Footer = () => {
+  const { isDark } = useTheme();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const Footer = () => {
 
   return (
     <>
-      <footer id="footer" className="footer">
+      <footer id="footer" className={`footer${isDark ? ' footer-dark' : ''}`}>
         <div className="container footer-top">
           <div className="row gy-4">
             {/* About Column */}
@@ -65,7 +67,7 @@ const Footer = () => {
             <div className="col-lg-4 col-md-6 footer-contact">
               <h4>Contact Us</h4>
               <p><i className="bi bi-geo-alt me-2"></i> Andheri East, Mumbai, Maharashtra 400069</p>
-              <p><i className="bi bi-telephone me-2"></i> +91 8005745242</p>
+              <p><i className="bi bi-telephone me-2"></i> +91 9509526580</p>
               <p><i className="bi bi-envelope me-2"></i> info@evenstocks.com</p>
             </div>
           </div>

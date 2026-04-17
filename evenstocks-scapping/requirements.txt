@@ -1,0 +1,8 @@
+requests
+beautifulsoup4
+html5lib
+pandas
+PyMuPDF
+selenium
+webdriver-manager
+python-dotenv

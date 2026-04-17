@@ -319,71 +319,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Features Section with Chat Widget */}
-        <section id="features-2" className="features-2 section">
-          <div className="container" data-aos="fade-up" data-aos-delay="100">
-            <div className="row align-items-center">
-              <div className="col-lg-4">
-                <div className="feature-item text-end mb-5" data-aos="fade-right" data-aos-delay="200">
-                  <div className="d-flex align-items-center justify-content-end gap-4">
-                    <div className="feature-content">
-                      <h3>AI-Powered Analysis</h3>
-                      <p>Cut through market noise. Our next-gen engine blends live data and historical trends from India's key stock exchanges.</p>
-                    </div>
-                    <div className="feature-icon flex-shrink-0"><i className="bi bi-display"></i></div>
-                  </div>
-                </div>
-                <div className="feature-item text-end mb-5" data-aos="fade-right" data-aos-delay="300">
-                  <div className="d-flex align-items-center justify-content-end gap-4">
-                    <div className="feature-content">
-                      <h3>Straightforward Buy/Sell Calls</h3>
-                      <p>Simple, data-backed recommendations&mdash;buy, sell, or hold&mdash;so you can act quickly and confidently.</p>
-                    </div>
-                    <div className="feature-icon flex-shrink-0"><i className="bi bi-feather"></i></div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4" data-aos="zoom-in" data-aos-delay="200" id="chat_box" style={{ textAlign: '-webkit-center' }}>
-                <div className="chat-window">
-                  <div className="chat-header" style={{ paddingTop: 0, paddingBottom: 0 }}>
-                    <img src="/assets/img/logo-horizontal.png" alt="EvenStocks" style={{ width: '50%' }} />
-                  </div>
-                  <div className="chat-messages">
-                    <div className="bot-message"><div className="message">Hello! I'm Even Stocks AI. How can I assist you with your stock research today?</div></div>
-                    <div className="user-message"><div className="message">Can I buy IREDA?</div></div>
-                    <div className="bot-message"><div className="message">Recommendation Verdict: <b>*Hold*</b><br />The stock's strong fundamentals and growth potential are balanced by recent volatility.</div></div>
-                  </div>
-                  <div className="chat-input">
-                    <input type="text" value={userMessage} onChange={(e) => setUserMessage(e.target.value)} placeholder="Type your message..." onKeyDown={(e) => e.key === 'Enter' && handleChatbot()} />
-                    <button className="send-btn" onClick={handleChatbot}>&#10148;</button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="feature-item mb-5" data-aos="fade-left" data-aos-delay="200">
-                  <div className="d-flex align-items-center gap-4">
-                    <div className="feature-icon flex-shrink-0"><i className="bi bi-code-square"></i></div>
-                    <div className="feature-content">
-                      <h3>Indian Market Focus</h3>
-                      <p>EvenStocks focuses exclusively on India's stock exchanges&mdash;NSE, BSE, and NSE-SMI.</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="feature-item mb-5" data-aos="fade-left" data-aos-delay="300">
-                  <div className="d-flex align-items-center gap-4">
-                    <div className="feature-icon flex-shrink-0"><i className="bi bi-phone"></i></div>
-                    <div className="feature-content">
-                      <h3>Personalized Guidance</h3>
-                      <p>Every tip, every insight is molded to your specific goals, risk tolerance, and timeframe.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Testimonials */}
         <section id="testimonials" className="testimonials section light-background">
@@ -550,7 +485,7 @@ const HomePage = () => {
                   </div>
                   <div className="info-item" data-aos="fade-up" data-aos-delay="400">
                     <div className="icon-box"><i className="bi bi-telephone"></i></div>
-                    <div className="content"><h4>Phone Number</h4><p>+91 8005745242</p></div>
+                    <div className="content"><h4>Phone Number</h4><p>+91 9509526580</p></div>
                   </div>
                   <div className="info-item" data-aos="fade-up" data-aos-delay="500">
                     <div className="icon-box"><i className="bi bi-envelope"></i></div>

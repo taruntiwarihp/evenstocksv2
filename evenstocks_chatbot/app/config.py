@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv("../.env")
 
 ANTHROPIC_API_KEY: str = os.environ["ANTHROPIC_API_KEY"]
 HOST: str = os.getenv("HOST", "0.0.0.0")
