@@ -4,10 +4,8 @@ import { useTheme } from '../context/ThemeContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/chatbot-final.css';
 
-const WS_URL = process.env.REACT_APP_CHATBOT_WS_URL
-  || (window.location.hostname === 'localhost'
-    ? 'ws://localhost:8000'
-    : `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}`);
+const WS_URL = 'ws://localhost:8000';
+const API_BASE = 'http://localhost:8000';
 
 const ChatBotPageFinal = () => {
   const { isLoggedIn, user, logout } = useAuth();
@@ -37,7 +35,6 @@ const ChatBotPageFinal = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [chatSearchQuery, setChatSearchQuery] = useState('');
-  const searchModalOpenRef = useRef(false);
   const pendingMessageRef = useRef(null);
   const isCancelledRef = useRef(false); // true after cancel — gates stream events, NOT search
 
@@ -45,15 +42,33 @@ const ChatBotPageFinal = () => {
   const thinkingTimerRef = useRef(null);
   const textareaRef = useRef(null);
   const wsRef = useRef(null);
-  const searchSourceRef = useRef('mention'); // 'mention' or 'topbar'
 
-  // WebSocket connection to Python AI backend
+  const fetchStockSearch = async (query) => {
+    const q = query.trim();
+    if (!q) return [];
+    try {
+      const base = API_BASE ? API_BASE.replace(/\/+$/, '') : '';
+      const res = await fetch(`${base}/api/stocks/search?q=${encodeURIComponent(q)}`);
+      if (!res.ok) return [];
+      const data = await res.json();
+      return (data.results || []).map((r) => ({
+        symbol: r.stock_name,
+        name: r.stock_name.replace(/_/g, ' '),
+        price: r.current_price || '',
+        pe: r.stock_pe || '',
+        market_cap: r.market_cap || '',
+      }));
+    } catch {
+      return [];
+    }
+  };
+
+  // WebSocket connection and setup
   useEffect(() => {
     const connectWs = () => {
       const ws = new WebSocket(`${WS_URL}/ws/stock-chat`);
 
       ws.onopen = () => {
-        console.log('Connected to EvenStocks AI');
         wsRef.current = ws;
         // Auto-send pending message (from stock page redirect)
         if (pendingMessageRef.current) {
@@ -85,23 +100,6 @@ const ChatBotPageFinal = () => {
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-
-        if (data.type === 'search_results') {
-          // Stock search results from DB
-          const results = data.results.map((r) => ({
-            symbol: r.stock_name,
-            name: r.stock_name.replace(/_/g, ' '),
-            price: r.current_price || '',
-            pe: r.stock_pe || '',
-            market_cap: r.market_cap || '',
-          }));
-          if (searchModalOpenRef.current) {
-            setSearchResults(results);
-          } else {
-            setMentionResults(results);
-            setShowMentionList(results.length > 0);
-          }
-        }
 
         if (data.type === 'stream_start') {
           if (isCancelledRef.current) return; // leftover from cancelled stream
@@ -140,11 +138,13 @@ const ChatBotPageFinal = () => {
       };
 
       ws.onclose = () => {
+        console.log('❌ WebSocket disconnected');
         wsRef.current = null;
         setTimeout(connectWs, 3000);
       };
 
-      ws.onerror = () => {
+      ws.onerror = (error) => {
+        console.error('❌ WebSocket error:', error);
         ws.close();
       };
     };
@@ -153,8 +153,6 @@ const ChatBotPageFinal = () => {
     return () => { if (wsRef.current) wsRef.current.close(); };
   }, []);
 
-  // Sync searchModalOpen to ref for WS handler
-  useEffect(() => { searchModalOpenRef.current = searchModalOpen; }, [searchModalOpen]);
 
   // Handle incoming message from stock page redirect
   useEffect(() => {
@@ -407,17 +405,17 @@ const ChatBotPageFinal = () => {
       textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 120) + 'px';
     }
 
-    // Handle @mentions via WebSocket search
+    // Handle @mentions via HTTP search
     const lastAtIndex = value.lastIndexOf('@');
     if (lastAtIndex !== -1) {
       const afterAt = value.substring(lastAtIndex + 1);
       // Only show mention list if @ is followed by text without space
       if (!afterAt.includes(' ') && !afterAt.includes('\n')) {
         setMentionQuery(afterAt);
-        searchSourceRef.current = 'mention';
-        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-          wsRef.current.send(JSON.stringify({ action: 'search', query: afterAt }));
-        }
+        fetchStockSearch(afterAt).then((results) => {
+          setMentionResults(results);
+          setShowMentionList(results.length > 0);
+        });
       } else {
         setShowMentionList(false);
       }
@@ -594,15 +592,11 @@ const ChatBotPageFinal = () => {
     }
   }, [streamingContent]);
 
-  const handleSearch = (query) => {
+  const handleSearch = async (query) => {
     setSearchQuery(query);
-    if (query.trim()) {
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({ action: 'search', query }));
-      }
-    } else {
-      setSearchResults([]);
-    }
+    if (!query.trim()) { setSearchResults([]); return; }
+    const results = await fetchStockSearch(query);
+    setSearchResults(results);
   };
 
   const handleStockSelect = (stock) => {
@@ -815,11 +809,16 @@ const ChatBotPageFinal = () => {
               ☰
             </button>
             <div className="topbar-left">
-              <div className="search-trigger-final" onClick={() => setSearchModalOpen(true)}>
+              <button
+                type="button"
+                className="search-trigger-final"
+                onClick={() => setSearchModalOpen(true)}
+                aria-label="Open stock search"
+              >
                 <span className="search-trigger-icon">🔍</span>
                 <span className="search-trigger-text">Search stocks, ETF, IPO...</span>
                 <span className="search-hint">Ctrl + K</span>
-              </div>
+              </button>
             </div>
 
             {/* Search Modal Overlay */}

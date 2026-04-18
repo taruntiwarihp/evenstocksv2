@@ -1606,11 +1606,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 10px 16px;
   border-radius: 24px;
   cursor: pointer;
   transition: all 0.2s;
   min-width: 260px;
+  min-height: 42px;
+  width: 100%;
+  max-width: 100%;
+  touch-action: manipulation;
   background: #f0f0f0;
   border: 1px solid #e9ecef;
 }
@@ -1761,6 +1765,48 @@
 .search-modal-results-final {
   max-height: 400px;
   overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .search-modal-overlay-final {
+    align-items: flex-end;
+    justify-content: center;
+    padding-top: 0;
+  }
+
+  .search-modal-box-final {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    border-radius: 0;
+    margin: 0;
+    max-height: 100vh;
+  }
+
+  .search-modal-header-final,
+  .search-modal-filters-final {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .search-modal-filters-final {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .search-modal-results-final {
+    max-height: calc(100vh - 170px);
+  }
+
+  .search-modal-result-row-final {
+    padding: 14px 16px;
+  }
+
+  .search-modal-close-final {
+    padding: 8px 12px;
+  }
 }
 
 .search-modal-result-row-final {

@@ -82,6 +82,7 @@ services:
     ports:
       - '3000:3000'
     environment:
+      HOST: 0.0.0.0
       CHOKIDAR_USEPOLLING: 'true'
       REACT_APP_API_URL: http://localhost:5000/api
       REACT_APP_CHATBOT_WS_URL: ws://localhost:8000
@@ -92,6 +93,7 @@ services:
       - evenstocks-chatbot
     volumes:
       - ./evenstocks-react:/app
+      - /app/node_modules
 
 volumes:
   db_data:
