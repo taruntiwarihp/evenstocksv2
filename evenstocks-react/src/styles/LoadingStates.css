@@ -1,0 +1,392 @@
+/* Loading States and Alerts */
+
+/* ========== LOADING SPINNER ========== */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.spinner-inline {
+  padding: 40px;
+}
+
+.spinner-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+/* Spinner sizes */
+.spinner-sm .spinner-animation {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.spinner-md .spinner-animation {
+  width: 40px;
+  height: 40px;
+  border-width: 4px;
+}
+
+.spinner-lg .spinner-animation {
+  width: 60px;
+  height: 60px;
+  border-width: 5px;
+}
+
+.spinner-animation {
+  border: 4px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-message {
+  color: #718096;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ========== EMPTY STATE ========== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 2px dashed #cbd5e0;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  color: #cbd5e0;
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 8px 0;
+}
+
+.empty-state-message {
+  font-size: 14px;
+  color: #718096;
+  margin: 0 0 24px 0;
+  max-width: 300px;
+}
+
+.empty-state .btn {
+  min-width: 120px;
+}
+
+/* ========== ALERTS ========== */
+.alert {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border-left: 4px solid;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-title {
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  font-size: 14px;
+}
+
+.alert-message {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.alert-details {
+  display: block;
+  margin-top: 8px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.alert-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Alert Types */
+.alert-error {
+  background: #fff5f5;
+  border-left-color: #e53e3e;
+  color: #c53030;
+}
+
+.alert-error .alert-icon {
+  color: #e53e3e;
+}
+
+.alert-error .alert-title {
+  color: #c53030;
+}
+
+.alert-success {
+  background: #f0fff4;
+  border-left-color: #48bb78;
+  color: #22543d;
+}
+
+.alert-success .alert-icon {
+  color: #48bb78;
+}
+
+.alert-success .alert-title {
+  color: #22543d;
+}
+
+.alert-warning {
+  background: #fffaf0;
+  border-left-color: #ed8936;
+  color: #7c2d12;
+}
+
+.alert-warning .alert-icon {
+  color: #ed8936;
+}
+
+.alert-warning .alert-title {
+  color: #7c2d12;
+}
+
+.alert-info {
+  background: #ebf8ff;
+  border-left-color: #3182ce;
+  color: #2c5282;
+}
+
+.alert-info .alert-icon {
+  color: #3182ce;
+}
+
+.alert-info .alert-title {
+  color: #2c5282;
+}
+
+.alert-dismissible {
+  position: relative;
+}
+
+/* ========== SKELETON LOADER ========== */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-text {
+  margin-bottom: 12px;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-line.short {
+  width: 60%;
+}
+
+.skeleton-card {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 200px;
+  background: #e0e0e0;
+}
+
+.skeleton-content {
+  padding: 16px;
+}
+
+.skeleton-title {
+  height: 20px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.skeleton-text {
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+/* ========== DARK MODE ========== */
+@media (prefers-color-scheme: dark) {
+  .empty-state {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .empty-state-icon {
+    color: #4a5568;
+  }
+
+  .empty-state-title {
+    color: #f7fafc;
+  }
+
+  .empty-state-message {
+    color: #cbd5e0;
+  }
+
+  .alert {
+    color: inherit;
+  }
+
+  .alert-error {
+    background: #742a2a;
+    border-left-color: #fc8181;
+    color: #fc8181;
+  }
+
+  .alert-error .alert-title {
+    color: #fed7d7;
+  }
+
+  .alert-error .alert-message {
+    color: #fc8181;
+  }
+
+  .alert-success {
+    background: #22543d;
+    border-left-color: #9ae6b4;
+    color: #9ae6b4;
+  }
+
+  .alert-success .alert-title {
+    color: #c6f6d5;
+  }
+
+  .alert-warning {
+    background: #7c2d12;
+    border-left-color: #fed7aa;
+    color: #fed7aa;
+  }
+
+  .alert-warning .alert-title {
+    color: #fed7aa;
+  }
+
+  .alert-info {
+    background: #2c5282;
+    border-left-color: #63b3ed;
+    color: #63b3ed;
+  }
+
+  .alert-info .alert-title {
+    color: #90cdf4;
+  }
+
+  .spinner-animation {
+    border-color: #4a5568;
+    border-top-color: #667eea;
+  }
+
+  .spinner-message {
+    color: #cbd5e0;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #2d3748 25%,
+      #4a5568 50%,
+      #2d3748 75%
+    );
+  }
+
+  .skeleton-image,
+  .skeleton-title,
+  .skeleton-text {
+    background: #4a5568;
+  }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 600px) {
+  .empty-state {
+    padding: 40px 20px;
+  }
+
+  .alert {
+    flex-direction: column;
+  }
+
+  .alert-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .alert-actions .btn {
+    flex: 1;
+    max-width: 100px;
+  }
+}

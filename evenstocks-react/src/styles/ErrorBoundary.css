@@ -1,0 +1,127 @@
+/* Error Boundary Styles */
+.error-boundary-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.error-boundary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.error-boundary-icon {
+  font-size: 64px;
+  color: #e53e3e;
+  margin-bottom: 20px;
+}
+
+.error-boundary-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 12px 0;
+}
+
+.error-boundary-message {
+  font-size: 16px;
+  color: #718096;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.error-boundary-details {
+  background: #f7fafc;
+  border-left: 4px solid #e53e3e;
+  border-radius: 4px;
+  padding: 12px;
+  margin: 20px 0;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.error-boundary-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.error-boundary-code {
+  background: #edf2f7;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  overflow-x: auto;
+  margin: 8px 0 0 0;
+  color: #c53030;
+  line-height: 1.4;
+}
+
+.error-boundary-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.error-boundary-actions .btn {
+  min-width: 120px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .error-boundary-card {
+    padding: 24px;
+  }
+
+  .error-boundary-icon {
+    font-size: 48px;
+  }
+
+  .error-boundary-title {
+    font-size: 20px;
+  }
+
+  .error-boundary-actions {
+    flex-direction: column;
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .error-boundary-card {
+    background: #1a202c;
+    color: #e2e8f0;
+  }
+
+  .error-boundary-title {
+    color: #f7fafc;
+  }
+
+  .error-boundary-message {
+    color: #cbd5e0;
+  }
+
+  .error-boundary-details {
+    background: #2d3748;
+    border-left-color: #fc8181;
+  }
+
+  .error-boundary-details summary {
+    color: #e2e8f0;
+  }
+
+  .error-boundary-code {
+    background: #2d3748;
+    color: #fc8181;
+  }
+}
