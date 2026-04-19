@@ -60,6 +60,7 @@ const Header = () => {
         <nav id="navmenu" className="navmenu">
           <ul>
             <li><Link to="/" className={isActive('/')} onClick={() => setMobileNavOpen(false)}>Home</Link></li>
+            <li><Link to="/ai-tools" className={isActive('/ai-tools')} onClick={() => setMobileNavOpen(false)}><i className="bi bi-cpu"></i> AI Tools</Link></li>
             <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')}>About</a></li>
             <li><a href="#pricing" onClick={(e) => scrollToSection(e, 'pricing')}>Pricing</a></li>
             <li><a href="#contact" onClick={(e) => scrollToSection(e, 'contact')}>Contact</a></li>

@@ -1,43 +1,67 @@
-"""News Analyst — stub for Phase 1. Real implementation in Phase 3 (US-C1)."""
+"""News Analyst — Phase 3: consumes real Google News + Yahoo Finance RSS feed."""
+
+import logging
+
+from data_providers import news_feed
 
 from .base import BaseAgent
+
+log = logging.getLogger(__name__)
 
 
 class NewsAnalyst(BaseAgent):
     name = "news"
-    max_tokens = 800
+    max_tokens = 900
 
     def system_prompt(self) -> str:
         return (
             "You are a financial news analyst covering Indian markets. "
-            "You synthesize news impact on stocks from Moneycontrol, Economic Times, Livemint, Business Standard, "
-            "and BSE/NSE announcements. You distinguish noise from material events."
+            "You synthesize news impact on stocks from Moneycontrol, Economic Times, Livemint, "
+            "Business Standard, BSE/NSE filings and Yahoo Finance. You distinguish noise from "
+            "material events and explicitly flag rumours vs. confirmed announcements."
         )
 
     def user_prompt(self, context: dict) -> str:
         ticker = context.get("ticker", "UNKNOWN")
         company_info = context.get("company_info") or {}
+        company_name = company_info.get("stock_name") or ticker
         sector = company_info.get("sector") or company_info.get("industry") or "Unknown"
 
-        return f"""**Phase 1 limitation:** real-time news integration is not yet wired in (coming in Phase 3).
+        try:
+            news = news_feed.get_news(ticker, company_name=company_name)
+        except Exception as exc:
+            log.warning("news fetch failed for %s: %s", ticker, exc)
+            news = {"items": [], "count": 0, "sources": []}
 
-For now, give a **generic sector-level news context** for Indian stock **{ticker}** in sector **{sector}**.
+        formatted = news_feed.format_for_prompt(news)
+        sources_line = ", ".join(news.get("sources") or []) or "none"
 
-## Required output (markdown)
+        return f"""## Live news feed for **{ticker}** ({company_name}) — sector: {sector}
 
-### Sector news backdrop
-2-3 bullets on what's typically in the news for this sector right now (based on your knowledge).
+Sources hit: {sources_line}
+Items: {news.get('count', 0)}
 
-### Likely catalysts to watch
-- Next 7 days
-- Next quarter
+{formatted}
+
+---
+
+## Your task
+
+Analyse the **headlines above** and produce a markdown report:
+
+### Material events (last 30 days)
+List the headlines that genuinely matter (earnings, regulatory, M&A, large orders, management change, downgrades). Cite source + date.
+
+### Noise
+1-2 lines on items that look like clickbait / routine coverage.
+
+### Likely catalysts to watch (next 7-30 days)
+- ...
 
 ### Risk events
-Events that could move the stock significantly.
+Specific events from the news that could move the stock.
 
 ### Verdict
 One of: **Tailwinds / Neutral / Headwinds**
 
-**Disclaimer to include at the top:** "Based on sector-level context only — live news feed integration coming in Phase 3."
-
-Keep under 200 words."""
+Be specific — quote tickers, numbers, dates from the feed. If feed is empty, say so honestly and fall back to sector-level context. Keep under 280 words."""

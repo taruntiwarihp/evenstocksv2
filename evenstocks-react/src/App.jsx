@@ -18,6 +18,7 @@ import ChatBotPageFinal from './pages/ChatBotPageFinal';
 import StockDetailPage from './pages/StockDetailPage';
 import IrisPage from './pages/IrisPage';
 import ProfilePage from './pages/ProfilePage';
+import AiToolsPage from './pages/AiToolsPage';
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -54,6 +55,7 @@ const AppRoutes = () => {
       <Route path="/stock/:stockName" element={<StockDetailPage />} />
       <Route path="/iris" element={<IrisPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/ai-tools" element={<AiToolsPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

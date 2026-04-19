@@ -19,15 +19,22 @@ def get_conn() -> sqlite3.Connection | None:
 
 def search_stocks(conn: sqlite3.Connection, query: str, limit: int = 20) -> list[dict]:
     """Fuzzy search stocks by name. Returns list of {stock_name, url, market_cap}.
-    Empty query returns all stocks (limited)."""
-    q = query.strip().replace(" ", "_").replace(".", "")
+    Empty query returns all stocks (limited). Case- and separator-insensitive: 'tatamotors',
+    'Tata Motors', 'TATA_MOTORS' all match 'Tata_Motors'."""
+    q = query.strip().lower().replace(" ", "").replace("_", "").replace(".", "").replace("-", "")
     rows = conn.execute(
         """SELECT stock_name, url, market_cap, current_price, stock_pe
            FROM company_info
-           WHERE stock_name LIKE ?
-           ORDER BY stock_name
+           WHERE REPLACE(REPLACE(REPLACE(LOWER(stock_name), '_', ''), '-', ''), '.', '') LIKE ?
+           ORDER BY
+             CASE
+               WHEN REPLACE(REPLACE(REPLACE(LOWER(stock_name), '_', ''), '-', ''), '.', '') = ? THEN 0
+               WHEN REPLACE(REPLACE(REPLACE(LOWER(stock_name), '_', ''), '-', ''), '.', '') LIKE ? THEN 1
+               ELSE 2
+             END,
+             stock_name
            LIMIT ?""",
-        (f"%{q}%", limit),
+        (f"%{q}%", q, f"{q}%", limit),
     ).fetchall()
     return [dict(r) for r in rows]
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import InvestmentCommittee from '../components/InvestmentCommittee';
+import InvestmentToolkit from '../components/InvestmentToolkit';
 import '../styles/StockDetail.css';
 
 const API_BASE = 'http://localhost:8000';
@@ -590,6 +591,9 @@ const StockDetailPage = () => {
 
         {/* ─── AI INVESTMENT COMMITTEE ─── */}
         <InvestmentCommittee ticker={stockName} />
+
+        {/* ─── INVESTMENT TOOLKIT (Compare / Portfolio / Goal / History) ─── */}
+        <InvestmentToolkit ticker={stockName} />
 
         {/* ─── EVENSTOCKS SCORE ─── */}
         <section className="sd-card sd-score-card">

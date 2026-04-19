@@ -14,7 +14,9 @@ from typing import Callable, Optional
 from agents.base import AgentResult
 from agents.bear_researcher import BearResearcher, ResearchManager
 from agents.bull_researcher import BullResearcher
+from agents.concall_summarizer import ConcallSummarizer
 from agents.fundamentals_analyst import FundamentalsAnalyst
+from agents.macro_analyst import MacroAnalyst
 from agents.news_analyst import NewsAnalyst
 from agents.portfolio_manager import PortfolioManager
 from agents.risk_team import (
@@ -23,10 +25,11 @@ from agents.risk_team import (
     NeutralRiskAnalyst,
     RiskManager,
 )
+from agents.sebi_redflag_analyst import SebiRedFlagAnalyst
 from agents.sentiment_analyst import SentimentAnalyst
 from agents.technical_analyst import TechnicalAnalyst
 from config import settings
-from data_providers import stocks_db
+from data_providers import stocks_db, verdict_store
 
 
 ANALYST_CLASSES = [
@@ -34,6 +37,9 @@ ANALYST_CLASSES = [
     TechnicalAnalyst,
     NewsAnalyst,
     SentimentAnalyst,
+    SebiRedFlagAnalyst,
+    MacroAnalyst,
+    ConcallSummarizer,
 ]
 
 RISK_CLASSES = [
@@ -118,6 +124,8 @@ def run_pipeline(ticker: str, on_event: Optional[EventCallback] = None) -> dict:
         "elapsed_sec": round(time.time() - start, 2),
     }
     emit("pipeline_completed", {"elapsed_sec": final["elapsed_sec"], "rating": verdict_json.get("rating") if verdict_json else None})
+
+    verdict_store.log_verdict(final)
     return final
 
 
@@ -129,7 +137,7 @@ def _run_analysts(context: dict, emit: EventCallback) -> tuple[dict, dict]:
     for cls in ANALYST_CLASSES:
         emit("agent_started", {"agent": cls.name})
 
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=len(ANALYST_CLASSES)) as pool:
         futures = {pool.submit(_run_agent, cls(), context): cls.name for cls in ANALYST_CLASSES}
         for fut in as_completed(futures):
             name = futures[fut]

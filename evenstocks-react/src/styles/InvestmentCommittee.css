@@ -250,10 +250,70 @@
   border-radius: 10px;
 }
 
-.sd-page.dark .ic-thesis { background: rgba(74, 222, 128, 0.08); border: 1px solid rgba(74, 222, 128, 0.25); }
-.sd-page.light .ic-thesis { background: rgba(74, 222, 128, 0.12); border: 1px solid rgba(74, 222, 128, 0.3); }
-.sd-page.dark .ic-risks { background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.25); }
-.sd-page.light .ic-risks { background: rgba(248, 113, 113, 0.12); border: 1px solid rgba(248, 113, 113, 0.3); }
+.sd-page.dark .ic-thesis { background: rgba(74, 222, 128, 0.08); border: 1px solid rgba(74, 222, 128, 0.25); color: #e6e6e6; }
+.sd-page.light .ic-thesis { background: rgba(74, 222, 128, 0.12); border: 1px solid rgba(74, 222, 128, 0.3); color: #1a1a1a; }
+.sd-page.dark .ic-risks { background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.25); color: #e6e6e6; }
+.sd-page.light .ic-risks { background: rgba(248, 113, 113, 0.12); border: 1px solid rgba(248, 113, 113, 0.3); color: #1a1a1a; }
+.sd-page.dark .ic-thesis h4 { color: #4ade80; }
+.sd-page.light .ic-thesis h4 { color: #15803d; }
+.sd-page.dark .ic-risks h4 { color: #f87171; }
+.sd-page.light .ic-risks h4 { color: #b91c1c; }
+.sd-page.dark .ic-thesis ul, .sd-page.dark .ic-risks ul { color: #e6e6e6; }
+.sd-page.light .ic-thesis ul, .sd-page.light .ic-risks ul { color: #1a1a1a; }
+
+/* ─── After-tax projection block ────────────────────────────── */
+.ic-aftertax {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+}
+.sd-page.dark .ic-aftertax { background: rgba(124, 58, 237, 0.08); }
+.sd-page.light .ic-aftertax { background: rgba(124, 58, 237, 0.06); }
+
+.ic-aftertax h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ic-tax { color: #7c3aed; }
+
+.ic-aftertax-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.ic-aftertax-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ic-aftertax-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  opacity: 0.7;
+}
+.ic-aftertax-value {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.ic-aftertax-notes {
+  list-style: disc inside;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+.ic-aftertax-notes li { margin-bottom: 4px; }
+
+@media (max-width: 640px) {
+  .ic-aftertax-grid { grid-template-columns: 1fr 1fr; }
+}
 
 .ic-thesis h4, .ic-risks h4 {
   font-size: 13px;

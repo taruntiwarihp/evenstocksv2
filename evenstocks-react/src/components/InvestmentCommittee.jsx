@@ -8,6 +8,9 @@ const AGENT_META = {
   technical: { label: 'Technical', icon: 'bi-graph-up', color: '#2563eb', group: 'analyst' },
   news: { label: 'News', icon: 'bi-newspaper', color: '#b45309', group: 'analyst' },
   sentiment: { label: 'Sentiment', icon: 'bi-emoji-smile', color: '#7c3aed', group: 'analyst' },
+  sebi_redflag: { label: 'SEBI Red-Flags', icon: 'bi-shield-exclamation', color: '#9f1239', group: 'analyst' },
+  macro: { label: 'Macro-India', icon: 'bi-globe-asia-australia', color: '#0f766e', group: 'analyst' },
+  concall: { label: 'Concall Summary', icon: 'bi-mic', color: '#9333ea', group: 'analyst' },
   bull: { label: 'Bull Researcher', icon: 'bi-arrow-up-right-circle', color: '#16a34a', group: 'debate' },
   bear: { label: 'Bear Researcher', icon: 'bi-arrow-down-right-circle', color: '#dc2626', group: 'debate' },
   research_manager: { label: 'Research Manager', icon: 'bi-person-badge', color: '#0891b2', group: 'debate' },
@@ -19,7 +22,7 @@ const AGENT_META = {
 };
 
 const GROUPS = [
-  { id: 'analyst', label: 'Analyst Team', agents: ['fundamentals', 'technical', 'news', 'sentiment'] },
+  { id: 'analyst', label: 'Analyst Team', agents: ['fundamentals', 'technical', 'news', 'sentiment', 'sebi_redflag', 'macro', 'concall'] },
   { id: 'debate', label: 'Bull vs Bear Debate', agents: ['bull', 'bear', 'research_manager'] },
   { id: 'risk', label: 'Risk Committee', agents: ['risk_aggressive', 'risk_conservative', 'risk_neutral', 'risk_manager'] },
   { id: 'pm', label: 'Final Verdict', agents: ['portfolio_manager'] },
@@ -319,9 +322,41 @@ const VerdictTab = ({ verdict }) => {
           </div>
         )}
       </div>
+      {verdict.after_tax_projection?.available && (
+        <AfterTaxBlock projection={verdict.after_tax_projection} />
+      )}
     </>
   );
 };
+
+const AfterTaxBlock = ({ projection }) => (
+  <div className="ic-aftertax">
+    <h4><i className="bi bi-calculator ic-tax"></i> After-tax projection ({projection.holding_type})</h4>
+    <div className="ic-aftertax-grid">
+      <div>
+        <span className="ic-aftertax-label">Pre-tax return</span>
+        <span className="ic-aftertax-value">{projection.pre_tax_return_pct}%</span>
+      </div>
+      <div>
+        <span className="ic-aftertax-label">Post-tax return</span>
+        <span className="ic-aftertax-value ic-green">{projection.post_tax_return_pct}%</span>
+      </div>
+      <div>
+        <span className="ic-aftertax-label">Tax drag</span>
+        <span className="ic-aftertax-value ic-red">{projection.tax_drag_pct}%</span>
+      </div>
+      <div>
+        <span className="ic-aftertax-label">Effective rate</span>
+        <span className="ic-aftertax-value">{projection.effective_tax_rate_pct}%</span>
+      </div>
+    </div>
+    {projection.notes?.length > 0 && (
+      <ul className="ic-aftertax-notes">
+        {projection.notes.map((n, i) => <li key={i}>{n}</li>)}
+      </ul>
+    )}
+  </div>
+);
 
 const DebateTab = ({ debate }) => {
   const bullRounds = debate.bull_history || [];

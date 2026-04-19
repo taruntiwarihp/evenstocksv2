@@ -4,7 +4,18 @@ import json
 import re
 from typing import Optional
 
+from data_providers import tax_engine
+
 from .base import BaseAgent, AgentResult
+
+
+HORIZON_TO_MONTHS = {
+    "1-3 months": 2,
+    "3-6 months": 4.5,
+    "6-12 months": 9,
+    "1-3 years": 24,
+    "3+ years": 48,
+}
 
 
 class PortfolioManager(BaseAgent):
@@ -14,11 +25,11 @@ class PortfolioManager(BaseAgent):
     def system_prompt(self) -> str:
         return (
             "You are the Chief Investment Officer of an Indian PMS (Portfolio Management Service). "
-            "You synthesize input from fundamentals, technical, news, and sentiment analysts into a "
-            "final, actionable verdict for Indian retail investors. "
+            "You synthesize input from fundamentals, technical, news, sentiment, governance, macro, "
+            "and concall analysts into a final, actionable verdict for Indian retail investors. "
             "You use the Indian rating convention: Strong Buy, Accumulate, Hold, Reduce, Sell. "
             "You specify target price and stop-loss in INR. You think in time horizons relevant to "
-            "Indian tax: short-term (<1y, 15% STCG) vs long-term (>1y, 12.5% LTCG above ₹1L). "
+            "Indian tax: short-term (≤1y, 20% STCG) vs long-term (>1y, 12.5% LTCG above ₹1.25L). "
             "You are decisive — no wishy-washy answers. Every verdict ties to evidence from the analysts."
         )
 
@@ -72,9 +83,32 @@ Rules:
 
         parsed = _extract_json(result.report)
         if parsed:
+            current_price = _to_float((context.get("company_info") or {}).get("current_price"))
+            target = _to_float(parsed.get("target_price"))
+            horizon = HORIZON_TO_MONTHS.get(parsed.get("time_horizon"), 12)
+            if current_price and target:
+                parsed["after_tax_projection"] = tax_engine.project_after_tax(
+                    current_price=current_price,
+                    target_price=target,
+                    horizon_months=horizon,
+                )
             result.report = json.dumps(parsed)
             result.confidence = float(parsed.get("confidence", 50)) / 100.0
         return result
+
+
+def _to_float(val) -> Optional[float]:
+    if val is None:
+        return None
+    if isinstance(val, (int, float)):
+        return float(val)
+    s = str(val).replace(",", "").replace("₹", "").strip()
+    if not s or s in {"-", "—", "N/A"}:
+        return None
+    try:
+        return float(s)
+    except ValueError:
+        return None
 
 
 def _extract_json(text: str) -> Optional[dict]:

@@ -75,4 +75,67 @@ router.get('/analyze/:ticker/stream', async (req, res) => {
   });
 });
 
+// GET /api/agents/compare/:a/:b — side-by-side verdict
+router.get('/compare/:a/:b', async (req, res) => {
+  const { a, b } = req.params;
+  try {
+    const resp = await axios.get(
+      `${AGENTS_API_BASE}/compare/${encodeURIComponent(a)}/${encodeURIComponent(b)}`,
+      { timeout: 600000 } // 10 min — runs two pipelines in parallel
+    );
+    return res.json(resp.data);
+  } catch (err) {
+    const status = err.response?.status || 502;
+    const detail = err.response?.data?.detail || err.message;
+    return res.status(status).json({ error: 'compare failed', detail });
+  }
+});
+
+// POST /api/agents/portfolio/health — basket health check
+router.post('/portfolio/health', async (req, res) => {
+  try {
+    const resp = await axios.post(
+      `${AGENTS_API_BASE}/portfolio/health`,
+      req.body,
+      { timeout: 600000 }
+    );
+    return res.json(resp.data);
+  } catch (err) {
+    const status = err.response?.status || 502;
+    const detail = err.response?.data?.detail || err.message;
+    return res.status(status).json({ error: 'portfolio health failed', detail });
+  }
+});
+
+// POST /api/agents/goal/plan — SIP / lumpsum required for a target corpus
+router.post('/goal/plan', async (req, res) => {
+  try {
+    const resp = await axios.post(
+      `${AGENTS_API_BASE}/goal/plan`,
+      req.body,
+      { timeout: 10000 }
+    );
+    return res.json(resp.data);
+  } catch (err) {
+    const status = err.response?.status || 502;
+    const detail = err.response?.data?.detail || err.message;
+    return res.status(status).json({ error: 'goal plan failed', detail });
+  }
+});
+
+// GET /api/agents/history — recent verdicts
+router.get('/history', async (req, res) => {
+  try {
+    const resp = await axios.get(`${AGENTS_API_BASE}/history`, {
+      params: req.query,
+      timeout: 10000,
+    });
+    return res.json(resp.data);
+  } catch (err) {
+    const status = err.response?.status || 502;
+    const detail = err.response?.data?.detail || err.message;
+    return res.status(status).json({ error: 'history fetch failed', detail });
+  }
+});
+
 module.exports = router;

@@ -55,6 +55,7 @@ services:
       DEEP_MODEL: claude-sonnet-4-6
       QUICK_MODEL: claude-haiku-4-5-20251001
       STOCKS_DB_PATH: /app/data/stocks.db
+      VERDICT_DB_PATH: /app/data/verdicts.db
     volumes:
       - ./evenstocks-agents:/app
       - ./evenstocks_chatbot/data:/app/data
